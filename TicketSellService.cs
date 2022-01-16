@@ -22,7 +22,7 @@ namespace mse3_msa_hexagonal_architecture
                 order.OrderState == OrderState.Reserved
                 || order.OrderState == OrderState.Pending);
 
-            if (!isUnavailable)
+            if (isUnavailable)
             {
                 throw new Exception("Ticket is already reserved");
             }
