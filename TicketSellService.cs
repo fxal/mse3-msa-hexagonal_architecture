@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace mse3_msa_hexagonal_architecture
 {
@@ -13,6 +14,7 @@ namespace mse3_msa_hexagonal_architecture
 
         private IMetricsService metricsService;
 
+        /// <summary>method <c>ReserveTicket</c> ... </summary>
         public Order ReserveTicket(User buyer, Ticket ticket) {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
             bool isAvailable = persistedOrdersForTickets.Any(order => {
@@ -27,7 +29,7 @@ namespace mse3_msa_hexagonal_architecture
                 throw new Exception("Ticket is already reserved");
             }
 
-            Order order = new() {
+            Order order = new Order() {
                 Ticket = ticket,
                 Seller = ticketShelfService.FetchSellerOfTicket(ticket),
                 Buyer = buyer,
