@@ -13,7 +13,6 @@ namespace mse3_msa_hexagonal_architecture
 
         private IMetricsService metricsService;
 
-        /// <summary>method <c>ReserveTicket</c> ... </summary>
         public Order ReserveTicket(User buyer, Ticket ticket) {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
             bool isAvailable = persistedOrdersForTickets.Any(order => {

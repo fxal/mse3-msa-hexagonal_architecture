@@ -2,9 +2,8 @@ using System;
 
 namespace mse3_msa_hexagonal_architecture
 {
-    /// <summary>
-    /// 
-    /// </summary>
+
+    // TODO: sigrid
     public interface ISocialMediaService 
     {
         void PublishSellEvent(Order order);

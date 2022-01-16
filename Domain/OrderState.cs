@@ -1,6 +1,4 @@
 enum OrderState {
-    Available,
-
     Reserved,
 
     Pending,
