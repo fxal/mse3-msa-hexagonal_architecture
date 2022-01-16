@@ -1,5 +1,3 @@
-using System;
-
 namespace mse3_msa_hexagonal_architecture
 {
     /// <summary>

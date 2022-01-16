@@ -1,9 +1,7 @@
-using System;
-
 namespace mse3_msa_hexagonal_architecture
 {
     // TODO: sigrid
-    public interface IAccountingService 
+    public interface IAccountingService
     {
         /// <summary>
         /// 

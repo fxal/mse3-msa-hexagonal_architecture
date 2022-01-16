@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace mse3_msa_hexagonal_architecture
@@ -6,7 +5,7 @@ namespace mse3_msa_hexagonal_architecture
     /// <summary>
     /// Handles ticket and order related persistence.
     /// </summary>
-    public interface ITicketShelfService 
+    public interface ITicketShelfService
     {
         /// <summary>
         /// Persists an order in its given configuration in the database.

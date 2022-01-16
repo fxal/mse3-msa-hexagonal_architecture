@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace mse3_msa_hexagonal_architecture
 {
- 
+
     public class TicketSellService : ITicketSellService
     {
         private ITicketShelfService ticketShelfService;
@@ -15,17 +15,20 @@ namespace mse3_msa_hexagonal_architecture
         private IMetricsService metricsService;
 
         /// <inheritdoc/>
-        public Order ReserveTicket(User buyer, Ticket ticket) {
+        public Order ReserveTicket(User buyer, Ticket ticket)
+        {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
-            bool isUnavailable = persistedOrdersForTickets.Exists(order => 
-                order.OrderState == OrderState.Reserved 
+            bool isUnavailable = persistedOrdersForTickets.Exists(order =>
+                order.OrderState == OrderState.Reserved
                 || order.OrderState == OrderState.Pending);
 
-            if(!isUnavailable) {
+            if (!isUnavailable)
+            {
                 throw new Exception("Ticket is already reserved");
             }
 
-            Order order = new Order() {
+            Order order = new Order()
+            {
                 Ticket = ticket,
                 Seller = ticketShelfService.FetchSellerOfTicket(ticket),
                 Buyer = buyer,
@@ -36,18 +39,20 @@ namespace mse3_msa_hexagonal_architecture
         }
 
         /// <inheritdoc/>
-        public Order BuyTicket(Order order){
+        public Order BuyTicket(Order order)
+        {
             order.OrderState = OrderState.Pending;
             order = ticketShelfService.PersistOrder(order);
 
-            bool successfulTransaction = 
+            bool successfulTransaction =
                 accountingService.TransferBalance(order.Seller, order.Buyer, order.Ticket.TicketPrice);
 
             order.OrderState = successfulTransaction ? OrderState.Sold : OrderState.Reserved;
 
             Order completedOrder = ticketShelfService.PersistOrder(order);
 
-            if (successfulTransaction) {
+            if (successfulTransaction)
+            {
                 metricsService.PublishMetric(order);
                 socialMediaService.PublishSellEvent(order);
             }
@@ -56,8 +61,10 @@ namespace mse3_msa_hexagonal_architecture
         }
 
         /// <inheritdoc/>
-        public Order CancelTicket(Order order){
-            if ( order.OrderState == OrderState.Reserved) {
+        public Order CancelTicket(Order order)
+        {
+            if (order.OrderState == OrderState.Reserved)
+            {
                 order.OrderState = OrderState.Cancelled;
 
                 Order cancelledOrder = ticketShelfService.PersistOrder(order);
