@@ -14,7 +14,7 @@ namespace mse3_msa_hexagonal_architecture
 
         private IMetricsService metricsService;
 
-        /// <summary>method <c>ReserveTicket</c> ... </summary>
+        /// <inheritdoc/>
         public Order ReserveTicket(User buyer, Ticket ticket) {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
             bool isUnavailable = persistedOrdersForTickets.Exists(order => 
@@ -35,6 +35,7 @@ namespace mse3_msa_hexagonal_architecture
             return ticketShelfService.PersistOrder(order);
         }
 
+        /// <inheritdoc/>
         public Order BuyTicket(Order order){
             order.OrderState = OrderStates.Pending;
             order = ticketShelfService.PersistOrder(order);
@@ -53,7 +54,8 @@ namespace mse3_msa_hexagonal_architecture
 
             return completedOrder;
         }
-    
+
+        /// <inheritdoc/>
         public Order CancelTicket(Order order){
             if ( order.OrderState == OrderStates.Reserved) {
                 order.OrderState = OrderStates.Cancelled;
