@@ -1,4 +1,4 @@
-public enum OrderStates {
+public enum OrderState {
     Reserved,
     Pending,
     Sold,

@@ -18,8 +18,8 @@ namespace mse3_msa_hexagonal_architecture
         public Order ReserveTicket(User buyer, Ticket ticket) {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
             bool isUnavailable = persistedOrdersForTickets.Exists(order => 
-                order.OrderState == OrderStates.Reserved 
-                || order.OrderState == OrderStates.Pending);
+                order.OrderState == OrderState.Reserved 
+                || order.OrderState == OrderState.Pending);
 
             if(!isUnavailable) {
                 throw new Exception("Ticket is already reserved");
@@ -29,7 +29,7 @@ namespace mse3_msa_hexagonal_architecture
                 Ticket = ticket,
                 Seller = ticketShelfService.FetchSellerOfTicket(ticket),
                 Buyer = buyer,
-                OrderState = OrderStates.Reserved,
+                OrderState = OrderState.Reserved,
             };
 
             return ticketShelfService.PersistOrder(order);
@@ -37,13 +37,13 @@ namespace mse3_msa_hexagonal_architecture
 
         /// <inheritdoc/>
         public Order BuyTicket(Order order){
-            order.OrderState = OrderStates.Pending;
+            order.OrderState = OrderState.Pending;
             order = ticketShelfService.PersistOrder(order);
 
             bool successfulTransaction = 
                 accountingService.TransferBalance(order.Seller, order.Buyer, order.Ticket.TicketPrice);
 
-            order.OrderState = successfulTransaction ? OrderStates.Sold : OrderStates.Reserved;
+            order.OrderState = successfulTransaction ? OrderState.Sold : OrderState.Reserved;
 
             Order completedOrder = ticketShelfService.PersistOrder(order);
 
@@ -57,8 +57,8 @@ namespace mse3_msa_hexagonal_architecture
 
         /// <inheritdoc/>
         public Order CancelTicket(Order order){
-            if ( order.OrderState == OrderStates.Reserved) {
-                order.OrderState = OrderStates.Cancelled;
+            if ( order.OrderState == OrderState.Reserved) {
+                order.OrderState = OrderState.Cancelled;
 
                 Order cancelledOrder = ticketShelfService.PersistOrder(order);
                 metricsService.PublishMetric(cancelledOrder);
