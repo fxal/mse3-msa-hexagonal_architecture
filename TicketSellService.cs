@@ -17,15 +17,15 @@ namespace mse3_msa_hexagonal_architecture
         /// <summary>method <c>ReserveTicket</c> ... </summary>
         public Order ReserveTicket(User buyer, Ticket ticket) {
             List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
-            bool isAvailable = persistedOrdersForTickets.Any(order => {
+            bool isUnavailable = persistedOrdersForTickets.Exists(order => {
                 if(order.OrderState == OrderState.Reserved 
                     || order.OrderState == OrderState.Pending) {
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             });
 
-            if(!isAvailable) {
+            if(!isUnavailable) {
                 throw new Exception("Ticket is already reserved");
             }
 
