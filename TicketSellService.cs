@@ -18,8 +18,8 @@ namespace mse3_msa_hexagonal_architecture
         /// <inheritdoc/>
         public Order ReserveTicket(User buyer, Ticket ticket)
         {
-            List<Order> persistedOrdersForTickets = ticketShelfService.FetchOrdersForTicket(ticket);
-            bool isUnavailable = persistedOrdersForTickets.Exists(order =>
+            List<Order> persistedOrdersForTicket = ticketShelfService.FetchOrdersForTicket(ticket);
+            bool isUnavailable = persistedOrdersForTicket.Exists(order =>
                 order.OrderState == OrderState.Reserved
                 || order.OrderState == OrderState.Pending);
 
