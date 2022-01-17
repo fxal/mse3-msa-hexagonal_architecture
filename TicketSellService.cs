@@ -4,6 +4,7 @@ using System.Collections.Generic;
 namespace mse3_msa_hexagonal_architecture
 {
 
+    /// <inheritdoc/>
     public class TicketSellService : ITicketSellService
     {
         private ITicketShelfService ticketShelfService;
@@ -42,19 +43,19 @@ namespace mse3_msa_hexagonal_architecture
         public Order BuyTicket(Order order)
         {
             order.OrderState = OrderState.Pending;
-            order = ticketShelfService.PersistOrder(order);
+            Order pendingOrder = ticketShelfService.PersistOrder(order);
 
             bool successfulTransaction =
-                accountingService.TransferBalance(order.Seller, order.Buyer, order.Ticket.TicketPrice);
+                accountingService.TransferBalance(pendingOrder.Seller, pendingOrder.Buyer, pendingOrder.Ticket.TicketPrice);
 
-            order.OrderState = successfulTransaction ? OrderState.Sold : OrderState.Reserved;
+            pendingOrder.OrderState = successfulTransaction ? OrderState.Sold : OrderState.Reserved;
 
-            Order completedOrder = ticketShelfService.PersistOrder(order);
+            Order completedOrder = ticketShelfService.PersistOrder(pendingOrder);
 
             if (successfulTransaction)
             {
-                metricsService.PublishMetric(order);
-                socialMediaService.PublishSellEvent(order);
+                metricsService.PublishMetric(completedOrder);
+                socialMediaService.PublishSellEvent(completedOrder);
             }
 
             return completedOrder;
