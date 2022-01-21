@@ -10,7 +10,7 @@ Exercise description in [documentation](documentation/20220108_mse3_msa_Projekt_
 - [@fxal](https://github.com/fxal)
 
 ## Description
-Goal is to create a hexagonal architecture ticket service meeting the functional requirements stated in the [documentation](documentation/20220108_mse3_msa_Projekt_2_Aufgabenstellung_2021.pdf).
+Goal is to create a [hexagonal architecture](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) ticket service meeting the functional requirements stated in the [documentation](documentation/20220108_mse3_msa_Projekt_2_Aufgabenstellung_2021.pdf).
 
 Peripheral components (such as database access, or metrics collection) is abstracted with interfaces in the [Interfaces](Interfaces/) folder. This folder contains the required interfaces.
 
