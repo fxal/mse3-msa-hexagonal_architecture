@@ -35,7 +35,7 @@ namespace mse3_msa_hexagonal_architecture
         /// <summary>
         /// Cancels an order.
         /// Only orders in state "Reserved" are allowed to be canceled.
-        /// Using the ticketSelfService to persist the cancelled order
+        /// Using the ticketSelfService to persist the canceled order
         /// and increases the canceled order counter metric by publishing an event through the metric Service.
         /// </summary>
         /// <param name="order">The order to be canceled</param>
